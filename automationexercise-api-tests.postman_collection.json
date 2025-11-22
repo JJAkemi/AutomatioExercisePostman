@@ -1,0 +1,742 @@
+{
+	"info": {
+		"_postman_id": "ae6d76e1-d6c0-42fa-845d-8c276474f668",
+		"name": "automationexercise-api-tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20788566"
+	},
+	"item": [
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login con password invalido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Codigo de respuesta es 404\", () => {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"test@flare.com\",\r\n  \"password\": \"wrong_password\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://automationexercise.com/api/verifyLogin",
+									"protocol": "https",
+									"host": [
+										"automationexercise",
+										"com"
+									],
+									"path": [
+										"api",
+										"verifyLogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login exitoso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Codigo d erespuesta es 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Estructura del JSON es correcta\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    // Verificar que existan las propiedades\r",
+											"    pm.expect(jsonData).to.have.property('message');\r",
+											"    pm.expect(jsonData).to.have.property('responseCode');\r",
+											"    pm.expect(jsonData).to.have.property('status');\r",
+											"\r",
+											"    // Validar tipos de datos\r",
+											"    pm.expect(jsonData.message).to.be.a('string');\r",
+											"    pm.expect(jsonData.responseCode).to.be.a('number');\r",
+											"    pm.expect(jsonData.status).to.be.a('string');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "test@flare.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Test2025",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://automationexercise.com/api/verifyLogin",
+									"protocol": "https",
+									"host": [
+										"automationexercise",
+										"com"
+									],
+									"path": [
+										"api",
+										"verifyLogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login con email inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Codigo de respuesta es 404\", () => {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"nonexistentemailt@flare.com\",\r\n  \"password\": \"Test2025\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://automationexercise.com/api/verifyLogin",
+									"protocol": "https",
+									"host": [
+										"automationexercise",
+										"com"
+									],
+									"path": [
+										"api",
+										"verifyLogin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Usuario",
+					"item": [
+						{
+							"name": "Creacion exitosa con email nuevo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Usuario creado exitosamente\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(pm.response.code).to.eql(200);\r",
+											"    pm.expect(jsonData.message).to.eql(\"User created!\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Estructura de JSON de createAccount correcta\", function () {\r",
+											"    let jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property(\"responseCode\");\r",
+											"    pm.expect(jsonData).to.have.property(\"message\");\r",
+											"    pm.expect(jsonData.responseCode).to.be.a(\"number\");\r",
+											"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Generar timestamp único\r",
+											"let ts = Date.now();\r",
+											"\r",
+											"// Email dinámico\r",
+											"let dynamicEmail = `auto_user_${ts}@mail.com`;\r",
+											"\r",
+											"// Guardarlo en el entorno\r",
+											"pm.environment.set(\"newEmail\", dynamicEmail);\r",
+											"pm.environment.set(\"usedEmail\", pm.environment.get(\"newEmail\"));\r",
+											"\r",
+											"// Mostrar en consola\r",
+											"console.log(\"Email generado:\", dynamicEmail);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "Mr",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Jonathan",
+											"type": "text"
+										},
+										{
+											"key": "birth_date",
+											"value": "22",
+											"type": "text"
+										},
+										{
+											"key": "birth_month",
+											"value": "11",
+											"type": "text"
+										},
+										{
+											"key": "birth_year",
+											"value": "1990",
+											"type": "text"
+										},
+										{
+											"key": "firstname",
+											"value": "Jonathan",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "Castro",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "{{newEmail}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Test2025",
+											"type": "text"
+										},
+										{
+											"key": "company",
+											"value": "X",
+											"type": "text"
+										},
+										{
+											"key": "address1",
+											"value": "Calle 123",
+											"type": "text"
+										},
+										{
+											"key": "address2",
+											"value": "Apt 101",
+											"type": "text"
+										},
+										{
+											"key": "country",
+											"value": "Colombia",
+											"type": "text"
+										},
+										{
+											"key": "zipcode",
+											"value": "2000",
+											"type": "text"
+										},
+										{
+											"key": "state",
+											"value": "Antioquia",
+											"type": "text"
+										},
+										{
+											"key": "city",
+											"value": "Medellin",
+											"type": "text"
+										},
+										{
+											"key": "mobile_number",
+											"value": "3001234567",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://automationexercise.com/api/createAccount",
+									"protocol": "https",
+									"host": [
+										"automationexercise",
+										"com"
+									],
+									"path": [
+										"api",
+										"createAccount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creacion usuario con correo existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Email duplicado no permitido\", function () {\r",
+											"    let json = pm.response.json();\r",
+											"    pm.expect(json.responseCode).to.not.eql(201);\r",
+											"    pm.expect(json.message.toLowerCase()).to.include(\"already\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "Mr",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Jonathan",
+											"type": "text"
+										},
+										{
+											"key": "birth_date",
+											"value": "22",
+											"type": "text"
+										},
+										{
+											"key": "birth_month",
+											"value": "11",
+											"type": "text"
+										},
+										{
+											"key": "birth_year",
+											"value": "1990",
+											"type": "text"
+										},
+										{
+											"key": "firstname",
+											"value": "Jonathan",
+											"type": "text"
+										},
+										{
+											"key": "lastname",
+											"value": "Castro",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@flare.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Test2025",
+											"type": "text"
+										},
+										{
+											"key": "company",
+											"value": "X",
+											"type": "text"
+										},
+										{
+											"key": "address1",
+											"value": "Calle 123",
+											"type": "text"
+										},
+										{
+											"key": "address2",
+											"value": "Apt 101",
+											"type": "text"
+										},
+										{
+											"key": "country",
+											"value": "Colombia",
+											"type": "text"
+										},
+										{
+											"key": "zipcode",
+											"value": "2000",
+											"type": "text"
+										},
+										{
+											"key": "state",
+											"value": "Antioquia",
+											"type": "text"
+										},
+										{
+											"key": "city",
+											"value": "Medellin",
+											"type": "text"
+										},
+										{
+											"key": "mobile_number",
+											"value": "3001234567",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://automationexercise.com/api/createAccount",
+									"protocol": "https",
+									"host": [
+										"automationexercise",
+										"com"
+									],
+									"path": [
+										"api",
+										"createAccount"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "all products list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Codigo de respuesta es 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Productos existen en el array\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"products\");\r",
+									"    pm.expect(jsonData.products.length).to.be.above(0); // al menos 1 producto\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Estructura de productos correcta\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    jsonData.products.forEach(product => {\r",
+									"        pm.expect(product).to.have.property(\"id\");\r",
+									"        pm.expect(product).to.have.property(\"name\");\r",
+									"        pm.expect(product).to.have.property(\"price\");\r",
+									"\r",
+									"        // Opcional: validar tipos de datos\r",
+									"        pm.expect(product.id).to.be.a(\"number\");\r",
+									"        pm.expect(product.name).to.be.a(\"string\");\r",
+									"        pm.expect(product.price).to.be.a(\"string\");\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"IDs de productos son únicos\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let ids = jsonData.products.map(p => p.id);\r",
+									"    let uniqueIds = [...new Set(ids)];\r",
+									"    pm.expect(ids.length).to.eql(uniqueIds.length);\r",
+									"});\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://automationexercise.com/api/productsList",
+							"protocol": "https",
+							"host": [
+								"automationexercise",
+								"com"
+							],
+							"path": [
+								"api",
+								"productsList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CASOS API ADICIONALES",
+			"item": [
+				{
+					"name": "Tiempo de respuesta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"API responde en menos de 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "test@flare.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Test2025",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://automationexercise.com/api/verifyLogin",
+							"protocol": "https",
+							"host": [
+								"automationexercise",
+								"com"
+							],
+							"path": [
+								"api",
+								"verifyLogin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creacion sin email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login con email vacío falla\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(pm.response.code).to.not.eql(400);\r",
+									"    pm.expect(json).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Mr",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Jonathan",
+									"type": "text"
+								},
+								{
+									"key": "birth_date",
+									"value": "22",
+									"type": "text"
+								},
+								{
+									"key": "birth_month",
+									"value": "11",
+									"type": "text"
+								},
+								{
+									"key": "birth_year",
+									"value": "1990",
+									"type": "text"
+								},
+								{
+									"key": "firstname",
+									"value": "Jonathan",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Castro",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test@derfghjhvfgc.d",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "Test2025",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "X",
+									"type": "text"
+								},
+								{
+									"key": "address1",
+									"value": "Calle 123",
+									"type": "text"
+								},
+								{
+									"key": "address2",
+									"value": "Apt 101",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "Colombia",
+									"type": "text"
+								},
+								{
+									"key": "zipcode",
+									"value": "2000",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "Antioquia",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Medellin",
+									"type": "text"
+								},
+								{
+									"key": "mobile_number",
+									"value": "3001234567",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://automationexercise.com/api/createAccount",
+							"protocol": "https",
+							"host": [
+								"automationexercise",
+								"com"
+							],
+							"path": [
+								"api",
+								"createAccount"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
